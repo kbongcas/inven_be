@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Item } from "../../items/entities/item.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { AutoMap } from "@automapper/classes";
 import { User } from "../../users/entities/user.entity";
+import { ItemInstance } from "../../item-instances/entities/item-instance.entity";
 
 @Entity()
 export class Container{
@@ -22,10 +22,10 @@ export class Container{
     description: string;
 
     @AutoMap()
-    @OneToMany(() => Item, (item) => item.container)
-    items: Item[]
+    @OneToMany(() => ItemInstance, (itemInstance) => itemInstance.container)
+    items: ItemInstance[]
 
     @AutoMap()
     @ManyToOne(() => User, (user) => user.container,  { onDelete : "SET NULL"})
-    user: User
+    createdBy: User
 }

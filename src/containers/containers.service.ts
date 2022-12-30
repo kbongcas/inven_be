@@ -2,11 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateContainerDto } from './dto/create-container.dto';
-import { UpdateContainerRequestDto, UpdateContainerResponseDto } from "./dto/update-container.dto";
+import { UpdateContainerRequestDto } from "./dto/update-container.dto";
 import { Container } from './entities/container.entity';
 import { Inject } from '@nestjs/common/decorators';
 import { UsersService } from "../users/users.service";
-import { Item } from "../items/entities/item.entity";
 import { InjectMapper } from "@automapper/nestjs";
 import { Mapper } from "@automapper/core";
 
@@ -24,18 +23,27 @@ export class ContainersService {
   ) {}
   
   async findAll(userId: number) : Promise<Container[]> {
-    return this.containerRepository
+    return await this.containerRepository
       .createQueryBuilder("container")
-      .leftJoinAndSelect("container.user", "user")
-      .where("container.userId = :userId", { userId })
+      .leftJoinAndSelect("container.createdBy", "user")
+      .where("container.createdById = :userId", { userId })
       .getMany()
+  }
+
+  async findAllIds(userId: number) : Promise<number[]> {
+    const results = await this.containerRepository
+      .createQueryBuilder("container")
+      .leftJoinAndSelect("container.createdBy", "user")
+      .where("container.createdById = :userId", { userId })
+      .getMany()
+    return results.map((container) => container.id)
   }
 
   async findOne(userId: number, id: number): Promise<Container> {
     return await this.containerRepository
       .createQueryBuilder("container")
-      .leftJoinAndSelect("container.user", "user")
-      .where("container.userId = :userId", { userId })
+      .leftJoinAndSelect("container.createdBy", "user")
+      .where("container.createdById = :userId", { userId })
       .andWhere("container.id = :id", { id })
       .getOne()
   }
@@ -47,7 +55,7 @@ export class ContainersService {
     if(!foundUser) return null;
 
     const container = this.classMapper.map(createContainerDto, CreateContainerDto, Container)
-    container.user = foundUser;
+    container.createdBy = foundUser;
     
     return await this.containerRepository.save(container);
   }
@@ -62,7 +70,7 @@ export class ContainersService {
       .createQueryBuilder("container")
       .update(Container)
       .set({...container})
-      .where("userId = :userId", { userId })
+      .where("createdById = :userId", { userId })
       .andWhere("id = :id", { id })
       .execute()
     return result.affected ? container : null;
@@ -74,9 +82,10 @@ export class ContainersService {
       .createQueryBuilder("container")
       .delete()
       .from(Container)
-      .where("userId = :userId", { userId })
+      .where("createdById = :userId", { userId })
       .andWhere("id = :id", { id })
       .execute()
     return result.affected;
   }
+  
 }

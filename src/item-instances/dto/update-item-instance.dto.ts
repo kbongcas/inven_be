@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsNumber, IsString} from "class-validator";
+﻿import { IsNotEmpty, IsNumber, IsString, ValidateIf } from "class-validator";
 import { AutoMap } from "@automapper/classes";
 
-export class UpdateItemDto { 
-
+export class UpdateItemInstanceDto {
+  
   @IsString()
   @IsNotEmpty()
   @AutoMap()
@@ -35,36 +35,9 @@ export class UpdateItemDto {
   @IsString()
   @AutoMap()
   weight: string;
+
+  @IsNumber()
+  @ValidateIf((object, value) => value !== null)
+  @AutoMap()
+  containerId: number;
 }
-
-export class UpdateItemResponseDto {
-
-  @AutoMap()
-  id: number;
-  
-  @AutoMap()
-  name: string;
-
-  @AutoMap()
-  type: string;
-
-  @AutoMap()
-  count: number;
-
-  @AutoMap()
-  description: string;
-
-  @AutoMap()
-  cost: string;
-
-  @AutoMap()
-  notes: string;
-
-  @AutoMap()
-  image: string;
-
-  @AutoMap()
-  weight: string;
-
-}
-

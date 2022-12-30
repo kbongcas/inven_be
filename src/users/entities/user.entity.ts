@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Item } from "../../items/entities/item.entity";
 import { Container } from "../../containers/entities/container.entity";
 
@@ -15,9 +15,9 @@ export class User {
   @Column({nullable: true, default: null })
   refreshToken: string;
   
-  @OneToMany(() => Item, (item) => item.user)
+  @OneToMany(() => Item, (item) => item.createdBy)
   items: Item[];
 
-  @OneToMany(() => Container, (container) => container.user)
+  @OneToMany(() => Container, (container) => container.createdBy)
   container: Container[];
 }

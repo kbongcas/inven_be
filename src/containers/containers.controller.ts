@@ -20,8 +20,7 @@ import { GetCurrentUserId } from "../common/decorators/get-current-user-id.decor
 import { ReadContainerDto } from "./dto/read-continer.dto";
 import { CreateContainerDto } from "./dto/create-container.dto";
 import { RemoveContainerResponseDto } from "./dto/remove-item.dto";
-import { UpdateContainerRequestDto, UpdateContainerResponseDto } from "./dto/update-container.dto";
-import { UpdateItemResponseDto } from "../items/dto/update-item.dto";
+import { UpdateContainerRequestDto } from "./dto/update-container.dto";
 
 @Controller('containers')
 export class ContainersController {
@@ -86,5 +85,6 @@ export class ContainersController {
     if(!container) throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     return this.classMapper.map(container, Container, ReadContainerDto)
   }
+
 
 }

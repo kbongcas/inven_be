@@ -11,13 +11,15 @@ import { JwtModule } from "@nestjs/jwt";
 import { AutomapperModule } from "@automapper/nestjs";
 import { classes } from "@automapper/classes";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ItemInstance } from "./item-instances/entities/item-instance.entity";
+import { ItemInstancesModule } from './item-instances/item-instances.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(
       {
         isGlobal: true,
-        envFilePath:['.env.development.local, .env.development']
+        envFilePath:['.env.development.local', '.env.development']
       }
     ),
     TypeOrmModule.forRootAsync({
@@ -29,7 +31,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [Item, Container, User],
+        entities: [Item, Container, User, ItemInstance],
         synchronize: true,
       }),
       inject: [ConfigService]
@@ -41,7 +43,8 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     JwtModule.register({}),
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
-    })
+    }),
+    ItemInstancesModule
   ],
   controllers: [],
   providers: [],

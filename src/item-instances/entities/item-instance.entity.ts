@@ -1,10 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
+﻿import { ApiProperty } from "@nestjs/swagger";
+import { Container } from "../../containers/entities/container.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AutoMap } from "@automapper/classes";
-import { User } from "../../users/entities/user.entity";
 
 @Entity()
-export class Item{
+export class ItemInstance{
 
   @AutoMap()
   @PrimaryGeneratedColumn()
@@ -51,6 +51,7 @@ export class Item{
   image: string;
 
   @AutoMap()
-  @ManyToOne(() => User, (user) => user.items,  { onDelete : "SET NULL"})
-  createdBy: User
+  @ManyToOne(() => Container, (container) => container.items,  { onDelete : "SET NULL"})
+  container: Container
+
 }

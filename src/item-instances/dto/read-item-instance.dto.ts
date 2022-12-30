@@ -1,7 +1,7 @@
-import { AutoMap } from "@automapper/classes";
+﻿import { AutoMap } from "@automapper/classes";
 
-export class ReadItemDto{
-  
+export class ReadItemInstanceDto{
+
   @AutoMap()
   id: number;
 
@@ -15,18 +15,20 @@ export class ReadItemDto{
   count: number;
 
   @AutoMap()
-  description: string;
 
   @AutoMap()
-  cost: string;
 
   @AutoMap()
   notes: string;
 
   @AutoMap()
-  image: string;
+  description: string;
 
   @AutoMap()
-  weight: string;
+  image: string;
   
+  @AutoMap()
+  containerId: number;
+
+
 }

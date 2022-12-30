@@ -1,5 +1,5 @@
 import { AutoMap } from "@automapper/classes";
-import { IsNotEmpty, IsNumber, IsString, Min, ValidateIf } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, Min} from "class-validator";
 
 export class CreateItemDto{
 
@@ -37,8 +37,10 @@ export class CreateItemDto{
   @AutoMap()
   weight: string;
 
+  /*
   @IsNumber()
   @ValidateIf((object, value) => value !== null)
   @AutoMap()
   containerId: number;
+   */
 }
